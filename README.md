@@ -2,6 +2,8 @@
 
 [![License](https://img.shields.io/github/license/bruzit-test/template)](LICENSE)
 [![Last commit](https://img.shields.io/github/last-commit/bruzit-test/template)](https://github.com/bruzit-test/template/commits)
+[![MegaLinter](https://github.com/bruzit-test/template/actions/workflows/megalinter.yaml/badge.svg)](https://github.com/bruzit-test/template/actions/workflows/megalinter.yaml)
+[![Semantic Release](https://github.com/bruzit-test/template/actions/workflows/semantic-release.yaml/badge.svg)](https://github.com/bruzit-test/template/actions/workflows/semantic-release.yaml)
 
 <!-- Badges: license, last commit, then one GitHub workflow badge per required workflow in pipeline order: linting, formatting, verification, unit tests, integration tests, end-to-end tests, release, deployment. -->
 
@@ -9,7 +11,7 @@ Purpose of the project in one sentence or one short paragraph.
 
 **This repository:**
 
-Standardized repository scaffold for BruzIT projects. Pre-configured with semantic-release, license boilerplate, README structure, and initial v0.0.0 tag.
+Repository template for BruzIT projects: MegaLinter and semantic-release callers, release configuration, license and README skeleton.
 
 ## Features
 
@@ -20,8 +22,8 @@ Feature list or key capabilities; subsections as needed.
 **This repository:**
 
 - README outline with required and optional sections.
-- MIT License: [`LICENSE`](LICENSE).
-- No linting or release configuration yet (Integration and Deployment).
+- MegaLinter on pull requests and weekly: [`.mega-linter.yaml`](.mega-linter.yaml), with markdownlint [`.markdownlint.yaml`](.markdownlint.yaml) and zizmor [`zizmor.yaml`](zizmor.yaml) configurations.
+- semantic-release from Conventional Commits ([`.releaserc.yaml`](.releaserc.yaml)): version, changelog and GitHub release.
 
 ## Requirements
 
@@ -31,7 +33,8 @@ Platforms, tools, dependencies, and versions needed.
 
 **This repository:**
 
-- Platform: GitHub.
+- Platform: GitHub Actions.
+- Dependency: [BruzIT GitHub Actions and Workflows](https://github.com/bruzit/github-actions-and-workflows).
 
 ## Installation and Setup
 
@@ -40,8 +43,10 @@ How to install and set up the project, step by step.
 **This repository:**
 
 1. Create the repository from this template, by hand ("Use this template") or as code with [BruzIT GitHub Organization as Code](https://github.com/bruzit/github-organization-as-code), which can also manage its settings, rulesets, environments and secrets.
-2. Environments `release` and `autofix` are provisioned by BruzIT GitHub Organization as Code; no workflow uses them yet.
-3. Tag the initial commit `v0.0.0`, so the first release is `0.x` instead of `1.0.0`:
+2. Set up the GitHub Apps and environments, provisioned by BruzIT GitHub Organization as Code:
+   - `release`: semantic-release ([BruzIT GitHub Actions and Workflows: Use Semantic Release Action](https://github.com/bruzit/github-actions-and-workflows#use-semantic-release-action)).
+   - `autofix`: MegaLinter fixes, `GH_AUTOFIX_APP_ID` variable and `GH_AUTOFIX_APP_PEM_FILE` secret ([BruzIT GitHub Actions and Workflows: Use MegaLinter Workflow](https://github.com/bruzit/github-actions-and-workflows#use-megalinter-workflow)); without it, MegaLinter only reports.
+3. Tag the initial commit `v0.0.0`, so the first release is `0.x` instead of `1.0.0` ([`.releaserc.yaml`](.releaserc.yaml) keeps breaking changes on minor):
 
    ```shell
    git tag v0.0.0 "$(git rev-list --max-parents=0 HEAD)" && git push origin v0.0.0
@@ -69,6 +74,7 @@ How to keep it updated and healthy: updates, upgrades, backup and restore, unins
 
 **This repository:**
 
+- Bump the `@v0` refs on a new major of [BruzIT GitHub Actions and Workflows](https://github.com/bruzit/github-actions-and-workflows).
 - Keep this README aligned with the outline.
 
 ## Support
@@ -87,7 +93,7 @@ Local development environment and project layout.
 
 **This repository:**
 
-No tooling; Markdown and [`LICENSE`](LICENSE) only.
+Run MegaLinter locally: [BruzIT GitHub Actions and Workflows: Linting](https://github.com/bruzit/github-actions-and-workflows#linting).
 
 ## Testing
 
@@ -97,7 +103,7 @@ How to run checks and tests.
 
 **This repository:**
 
-No tests or linters.
+No unit tests; MegaLinter only (Integration and Deployment).
 
 ## Integration and Deployment
 
@@ -107,7 +113,11 @@ Workflows that integrate, release, and deploy the project.
 
 **This repository:**
 
-No workflows. The `main` ruleset requires the check `Required (MegaLinter)`, which no workflow reports yet.
+| Workflow                                                            | Trigger                          | Purpose                                                                      |
+|---------------------------------------------------------------------|----------------------------------|------------------------------------------------------------------------------|
+| [MegaLinter](.github/workflows/megalinter.yaml)                     | Pull request                     | Lint changed files; required check `Required (MegaLinter)`                   |
+| [MegaLinter Scheduled](.github/workflows/megalinter-scheduled.yaml) | Weekly, Monday 06:00 UTC; manual | Lint the whole codebase                                                      |
+| [Semantic Release](.github/workflows/semantic-release.yaml)         | Push to `main`                   | Version, changelog and GitHub release via the shared semantic-release action |
 
 ## Contributing
 
@@ -115,7 +125,7 @@ How to propose changes.
 
 **This repository:**
 
-Open a pull request to `main`. Commits follow the [Conventional Commits 1.0.0 specification](https://www.conventionalcommits.org/en/v1.0.0/) with a lowercase subject, enforced by the `main` ruleset.
+Open a pull request to `main`. Commits follow the [Conventional Commits 1.0.0 specification](https://www.conventionalcommits.org/en/v1.0.0/), from which semantic-release sets versions and the changelog automatically.
 
 ## License and Copyright
 
@@ -134,6 +144,7 @@ Related projects and documentation.
 
 **This repository:**
 
+- [BruzIT GitHub Actions and Workflows](https://github.com/bruzit/github-actions-and-workflows)
 - [BruzIT GitHub Organization as Code](https://github.com/bruzit/github-organization-as-code)
 
 ## Stats
